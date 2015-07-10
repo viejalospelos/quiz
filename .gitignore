@@ -75,3 +75,5 @@ $RECYCLE.BIN/
 *.lnk
 
 node_modules
+npm-debug.log
+quiz.sqlite
