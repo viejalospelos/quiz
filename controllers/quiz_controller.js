@@ -19,14 +19,26 @@ exports.load = function(req, res, next, quizId) {
 };
 
 //GET /quizes
+
+
 exports.index = function(req, res) {
-  models.Quiz.findAll().then(
-    function(quizes) {
-      res.render('quizes/index', { quizes: quizes, errors: []});
-    }
-  ).catch(function(error) { next(error)});
-	
+	if (req.query.search){
+		models.Quiz.findAll({order: "pregunta ASC", where:["pregunta like ?", "%" + req.query.search.replace(/\s/g, "%") + "%"]})
+		.then(
+		    function(quizes) {
+		      res.render('quizes/index', { quizes: quizes, errors: []});
+		    }
+  		).catch(function(error) { next(error)});
+	}else{
+		  models.Quiz.findAll()
+		  .then(
+		    function(quizes) {
+		      res.render('quizes/index', { quizes: quizes, errors: []});
+		    }
+		  ).catch(function(error) { next(error)});
+	}
 };
+
 
 // GET /quizes/:id
 exports.show = function(req, res) {
