@@ -44,6 +44,23 @@ app.use(function(req, res, next) {
   next();
 });
 
+// AUTO-LOGOUT
+app.use(function(req, res, next) {
+date=new Date;
+	if(req.session.user) {
+      if (date.getTime() > req.session.user.horaConexion + 5000){
+        delete req.session.user;
+        res.redirect('/login');
+      }else{
+          req.session.user.horaConexion = date.getTime();
+     }
+  }
+
+  next();
+});
+
+
+
 app.use('/', routes);
 
 
